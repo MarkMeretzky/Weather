@@ -131,14 +131,14 @@ class TableViewController: UITableViewController {
         //Display only the date, not the time.
         let date: String = dateTimeISO[indexPath.row];
         let tloc = date.index(of: "T")!
-		cell.textLabel!.text = String(date[..<tloc]);
+        cell.textLabel!.text = String(date[..<tloc]);
         
         //Display the icon.
         let iconName: String = icon[indexPath.row];
         cell.imageView!.image = UIImage(named: iconName);    //nil if .png file doesn't exist
         
         if fahrenheit {
-        	cell.detailTextLabel!.text = "Hi: \(maxTempF[indexPath.row])°F    Lo: \(minTempF[indexPath.row])°F";
+            cell.detailTextLabel!.text = "Hi: \(maxTempF[indexPath.row])°F    Lo: \(minTempF[indexPath.row])°F";
         } else {
             cell.detailTextLabel!.text = "Hi: \(maxTempC[indexPath.row])°C    Lo: \(minTempC[indexPath.row])°C";
         }
