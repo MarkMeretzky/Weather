@@ -18,7 +18,8 @@ class TableViewController: UITableViewController {
     var maxTempF: [Int] = [];
     var minTempC: [Int] = [];
     var maxTempC: [Int] = [];
-    var fahrenheit: Bool = true;
+    
+    var fahrenheit: Bool = true;  //toggle display to celsius
     
     required init(coder aDecoder: NSCoder) {
         super.init(nibName: nil, bundle: nil);
@@ -71,9 +72,6 @@ class TableViewController: UITableViewController {
                     return;
                 }
                 
-                //let respin
-                
-                //print(dictionary["response"]!); //the JSON downloaded from the server
                 let response = dictionary["response"]! as! [Any];
                 let dict = response[0] as! [String: Any];
                 let arrayOfDays = dict["periods"] as! [[String: Any]];
@@ -83,8 +81,8 @@ class TableViewController: UITableViewController {
                     self.icon.append(day["icon"]! as! String);
                     self.minTempF.append(day["minTempF"]! as! Int);
                     self.maxTempF.append(day["maxTempF"]! as! Int);
-                    self.minTempC.append(day["minTempF"]! as! Int);
-                    self.maxTempC.append(day["maxTempF"]! as! Int);
+                    self.minTempC.append(day["minTempC"]! as! Int);
+                    self.maxTempC.append(day["maxTempC"]! as! Int);
                 }
                 
                 DispatchQueue.main.async(execute: {() -> Void in
@@ -129,17 +127,20 @@ class TableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier, for: indexPath)
 
         // Configure the cell...
+        
+        //Display only the date, not the time.
         let date: String = dateTimeISO[indexPath.row];
-        let tloc = date.index(of: "T")!  //Display only the date.  Chop off the time.
+        let tloc = date.index(of: "T")!
 		cell.textLabel!.text = String(date[..<tloc]);
+        
+        //Display the icon.
         let iconName: String = icon[indexPath.row];
-        print(iconName);
         cell.imageView!.image = UIImage(named: iconName);    //nil if .png file doesn't exist
         
         if fahrenheit {
         	cell.detailTextLabel!.text = "Hi: \(maxTempF[indexPath.row])°F    Lo: \(minTempF[indexPath.row])°F";
         } else {
-            cell.detailTextLabel!.text = "Hi: \(maxTempF[indexPath.row])°C    Lo: \(minTempF[indexPath.row])°C";
+            cell.detailTextLabel!.text = "Hi: \(maxTempC[indexPath.row])°C    Lo: \(minTempC[indexPath.row])°C";
         }
         return cell;
     }
